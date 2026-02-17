@@ -1,0 +1,26 @@
+---
+description: Environment safety, secrets handling, and third-party runtime integrations
+alwaysApply: true
+---
+
+# Security and Runtime
+
+## Environment and Secrets
+
+- Never hardcode secrets, tokens, API keys, or private identifiers in source files.
+- Keep runtime config in environment variables and reference via `process.env`.
+- For public browser variables, require `NEXT_PUBLIC_` prefix.
+- Document required env variables when introducing new runtime dependencies.
+
+## Third-Party Scripts and Compliance
+
+- Add analytics/marketing scripts only when gated by project privacy policy.
+- Keep consent-dependent behavior in client-only integration components.
+- Ensure consent updates are idempotent and do not break page rendering.
+- Avoid introducing third-party scripts in route pages; prefer root layout or dedicated integration component.
+
+## Reliability and Safety
+
+- Add null/undefined guards for optional env vars and optional data fields.
+- Keep graceful fallbacks when runtime integrations are unavailable.
+- Do not break rendering when analytics or consent services fail to load.

@@ -1,0 +1,34 @@
+---
+description: Delivery checklist: lint, metadata, accessibility, and regression checks
+alwaysApply: true
+---
+
+# Quality Gates
+
+Before finalizing any change, validate these checks:
+
+## Technical Checks
+
+- New/updated code follows existing route-component-data architecture.
+- No unnecessary `"use client"` boundaries were introduced.
+- TypeScript remains strict-safe (no new `any` without explicit reason).
+- Imports use `@/*` alias where applicable.
+- Repeated visual values (especially colors/surfaces) are implemented as shared Tailwind tokens, not duplicated arbitrary color classes.
+
+## UI and Content Checks
+
+- New pages follow section-based composition and spacing rhythm.
+- Images use `next/image` correctly with intentional sizing.
+- External links opening new tabs include `rel="noopener noreferrer"`.
+- Navigation labels, breadcrumbs, and page headings are consistent.
+
+## Metadata and SEO Checks
+
+- New significant pages include metadata consideration (title/description).
+- Dynamic routes using static data include `generateStaticParams` + `notFound()` handling.
+
+## Final Validation
+
+- Run lint and fix introduced issues before completion.
+- Do not bypass lint/type checks unless user explicitly asks.
+- Keep diffs focused and minimal; avoid unrelated refactors.

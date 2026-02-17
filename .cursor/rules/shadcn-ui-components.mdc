@@ -1,0 +1,11 @@
+---
+description: Prefer shadcn/ui components and patterns
+alwaysApply: true
+---
+
+# shadcn/ui Component Preference
+
+- Prefer using existing shadcn/ui components from `components/ui/*` before creating custom interactive UI implementations.
+- For overlays (popover, dialog, dropdown, tooltip), use shadcn wrappers around Radix primitives instead of manual positioning logic.
+- When a requested shadcn component is missing, add the standard shadcn file in `components/ui/` and required utilities in `lib/utils.ts`.
+- Keep existing project styling, tokens, and responsive behavior when migrating to shadcn components.

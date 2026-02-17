@@ -1,0 +1,32 @@
+---
+description: Data-first content organization and Czech copy consistency
+globs: "{data/**/*.{ts,tsx},app/**/*.tsx,components/**/*.tsx}"
+alwaysApply: false
+---
+
+# Content and Data
+
+## Data-First Structure
+
+- Keep reusable page copy and content objects in `data/`.
+- Use `data/*.ts` for plain objects/arrays.
+- Use `data/*.tsx` only when content truly needs JSX fragments (for example rich FAQ answers).
+- Avoid embedding long repeated text directly in page components.
+
+## Typing Patterns
+
+- Infer mapped-item types from source data where practical.
+- Preferred style: `(typeof projects)[number]`.
+- Store shared reusable type contracts in `types.ts`.
+
+## Content Consistency
+
+- Preserve Czech-first tone and terminology unless task states otherwise.
+- Keep wording consistent across navigation, cards, hero text, and FAQ.
+- For regulatory/investment wording, prioritize clarity and trust over hype.
+
+## Link and Asset Content Rules
+
+- Keep downloadable files and static assets in `public/`.
+- Ensure all external links use safe attributes when opening new tabs.
+- Keep image alt text descriptive and localized to page language.

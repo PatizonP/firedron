@@ -1,64 +1,96 @@
 import Image from "next/image";
 
+import { AutonomousSection } from "@/components/sections/AutonomousSection";
+import { EffectiveLocateSection } from "@/components/sections/EffectiveLocateSection";
+import { ExplodedDroneSection } from "@/components/sections/ExplodedDroneSection";
+import { FasterIntegratedSection } from "@/components/sections/FasterIntegratedSection";
+import { FireImageSplitSection } from "@/components/sections/FireImageSplitSection";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { QuoteVideoSection } from "@/components/sections/QuoteVideoSection";
+import { StayInTouchSection } from "@/components/sections/StayInTouchSection";
+import { TimelineSplitSection } from "@/components/sections/TimelineSplitSection";
+import { Section } from "@/components/ui/Section";
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <div className="min-h-screen bg-ink">
+      <main className="pb-8">
+        <Section id="hero" size="large">
+          <HeroSection />
+        </Section>
+
+        <Section>
+          <div className="flex items-center justify-center gap-3">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/icons/imgGroup.svg"
+              alt=""
+              width={35}
+              height={23}
+              className="h-[17px] w-auto invert"
+              aria-hidden
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <Image
+              src="/icons/imgGroup1.svg"
+              alt="DOFEC logo"
+              width={131}
+              height={24}
+              className="h-[18px] w-auto invert"
+            />
+          </div>
+        </Section>
+
+        <Section>
+          <AutonomousSection />
+        </Section>
+
+        <Section>
+          <FireImageSplitSection />
+        </Section>
+
+        <Section>
+          <EffectiveLocateSection />
+        </Section>
+
+        <Section>
+          <QuoteVideoSection />
+        </Section>
+
+        <Section>
+          <FasterIntegratedSection />
+        </Section>
+
+        <Section>
+          <TimelineSplitSection />
+          <div className="mx-auto mt-8 max-w-[696px] px-4 text-center sm:mt-10">
+            <p className="text-2xl leading-[1.35] font-normal text-card-light">
+              Důležitý citát,který je obsažen ve videu a vysvětluje buď misi
+              značky nebo důležité USP dronu, případně celé služby, kterou
+              nabízíme.
+            </p>
+            <p className="mt-8 text-base leading-normal font-normal text-orange">
+              Konrád Španěl | Ředitel ZHS PRAHA
+            </p>
+          </div>
+        </Section>
+
+        <Section>
+          <ExplodedDroneSection />
+        </Section>
+
+        <Section>
+          <StayInTouchSection
+            title="Stay in touch"
+            description="Are you interested in DOFEC? We can contact you online or visit your team and present DOFEC in action."
+            primaryCta="Kontaktovat"
+            secondaryCta="Chci nabídku do mailu"
+          />
+        </Section>
+
+        <Section className="pt-1 pb-8">
+          <p className="text-center text-xs text-zinc-500">
+            © 2026 DOFEC All rights reserved
+          </p>
+        </Section>
       </main>
     </div>
   );

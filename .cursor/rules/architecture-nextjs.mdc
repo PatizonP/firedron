@@ -1,0 +1,36 @@
+---
+description: Next.js App Router architecture and server/client boundaries
+globs: app/**/*.tsx
+alwaysApply: false
+---
+
+# Next.js Architecture
+
+- Stack baseline: Next.js App Router + React + TypeScript strict + Tailwind v4.
+- Keep route entries in `app/**/page.tsx` and global shell in `app/layout.tsx`.
+- Use route groups `(group)` only for organization, not URL changes.
+
+## Server vs Client
+
+- Server Components are default.
+- Add `"use client"` only for hooks, browser APIs, or direct interaction logic.
+- Avoid making whole pages client components unless absolutely required.
+- Keep client islands focused (navigation behavior, FAQ toggles, consent dialog).
+
+## Dynamic Routes
+
+- For static data-driven details (`[slug]`), implement `generateStaticParams`.
+- Resolve invalid params with `notFound()`.
+- Prefer static rendering for marketing/content pages unless dynamic APIs are required.
+
+## Page Composition
+
+- Compose page sections inside `<main>`.
+- Reuse `Section` wrapper for consistent spacing/container/background behavior.
+- Keep section markers for readability (Hero, Benefits, FAQ, CTA).
+- Place optional `Breadcrumb` near page top for subpages.
+
+## Metadata
+
+- Keep global metadata in root layout.
+- Add route-level metadata when page intent differs significantly.

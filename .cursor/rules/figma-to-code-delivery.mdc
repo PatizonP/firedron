@@ -1,0 +1,49 @@
+---
+description: Figma-to-code mapping protocol for section delivery and responsive quality
+alwaysApply: true
+---
+
+# Figma to Code Delivery Protocol
+
+Apply this workflow when implementing or updating UI based on Figma designs.
+
+## Per-Section Workflow
+
+1. **Map structure first:** identify section purpose, content blocks, media blocks, and interactive elements.
+2. **Choose component boundaries:** place section in `components/sections/*` and reuse shared primitives from `components/ui/*`.
+3. **Move content to data:** keep long copy and repeated labels in `data/*`; keep JSX focused on composition.
+4. **Decide runtime boundary:** use Server Components by default and isolate interaction into minimal client islands only when needed.
+
+## Responsive Implementation Order
+
+- Build mobile-first at `320`, `375`, and `390` widths.
+- Extend layout at `768`, `1024`, and `1280+`.
+- Reflow horizontal desktop groups into vertical stacks on small screens.
+- Avoid fixed desktop heights if content may wrap on mobile.
+- Ensure no horizontal overflow at any target breakpoint.
+
+## Media and Asset Rules
+
+- Export and organize assets with clear names under `public/images/...`.
+- Use `next/image` with intentional dimensions and descriptive alt text.
+- Mark only above-the-fold visuals as priority; lazy-load lower sections.
+- Keep image crops intentional across breakpoints (no clipped key subject).
+
+## Interaction Rules (Hotspots and Callouts)
+
+- For plus markers, callouts, and similar annotations, use accessible patterns (expand/collapse panel, tooltip, or modal).
+- Keep keyboard access and focus visibility for all interactive controls.
+- Keep interaction logic in focused client components, not full-page client mode.
+
+## Section Definition of Done
+
+- Section structure matches Figma intent and reuses project UI patterns.
+- Copy is data-driven where reusable and not duplicated in multiple JSX files.
+- Mobile and desktop layouts are both intentional, readable, and overflow-free.
+- Interactive elements work with mouse, keyboard, and touch.
+
+## Page Definition of Done
+
+- Section order and spacing rhythm are consistent from Hero to Footer.
+- Metadata and heading hierarchy are coherent for the page intent.
+- Lint and type checks pass without introducing avoidable warnings.

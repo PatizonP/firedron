@@ -1,0 +1,37 @@
+---
+description: Rule index and global priorities for this project
+alwaysApply: true
+---
+
+# Project Rule Index
+
+This file defines global priorities. Detailed guidance is split into focused rules:
+
+- `architecture-nextjs.mdc`
+- `components-and-styling.mdc`
+- `collaboration-preferences.mdc`
+- `content-and-data.mdc`
+- `figma-to-code-delivery.mdc`
+- `homepage-delivery-and-responsive.mdc`
+- `quality-gates.mdc`
+- `security-and-runtime.mdc`
+- `shadcn-ui-components.mdc`
+
+## Global Priorities (always apply)
+
+- Prefer existing project patterns over inventing new architecture.
+- Keep changes minimal, readable, and consistent with neighboring files.
+- Default to Server Components and small Client Component islands.
+- Reuse shared UI (`Section`, `Button`, `Breadcrumb`, cards, grids) before creating new variants.
+- Keep long marketing copy in `data/` unless it is tiny one-off text.
+- Build layouts mobile-first, then extend to larger breakpoints.
+- Follow the Figma-to-code section workflow before implementing new UI.
+- Maintain Czech-first content style unless the task explicitly requires another locale.
+
+## Done Criteria
+
+- Updated code matches route/component/data structure already used in this repo.
+- New pages/components pass lint and basic accessibility checks.
+- Homepage changes are verified at mobile and desktop breakpoints without overflow.
+- Figma-driven sections are mapped to reusable components and data before polish.
+- New routes include metadata considerations and correct image/link semantics.

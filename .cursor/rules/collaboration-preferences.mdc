@@ -1,0 +1,23 @@
+---
+description: Persist user collaboration preferences as project rules
+alwaysApply: true
+---
+
+# Collaboration Preferences
+
+When the user provides a **new standing instruction** (process, style, tooling, or delivery preference), treat it as persistent guidance for this project.
+When the user says something is **important** and it should be remembered, update `.cursor/rules` automatically in the same task.
+
+## Update Workflow
+
+1. Add or update a rule in `.cursor/rules/*.mdc` that captures the preference clearly.
+2. Keep the rule concise, actionable, and aligned with existing project conventions.
+3. If needed, update `project-rules.mdc` index references so the rule set stays discoverable.
+4. Apply the new rule immediately in subsequent work.
+5. Do this proactively without waiting for an extra user reminder.
+
+## Scope Guardrail
+
+- Only persist instructions that are intended as ongoing preferences.
+- Do not persist one-off task details unless the user asks to keep them as a rule.
+- If intent is unclear, ask one short clarification question before persisting.

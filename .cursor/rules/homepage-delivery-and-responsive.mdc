@@ -1,0 +1,38 @@
+---
+description: Phased homepage delivery plan with mobile-first acceptance criteria
+alwaysApply: true
+---
+
+# Homepage Delivery and Mobile-First Execution
+
+Use this sequence when building or revising the marketing homepage from Figma.
+
+## Delivery Phases
+
+1. **Foundation:** establish metadata, global tokens, section spacing rhythm, and folder structure (`components/sections`, `components/ui`, `data`).
+2. **Data-first content:** move long copy and section configuration to `data/` before building section JSX.
+3. **Reusable UI:** implement shared primitives first (`Section`, `Container`, `Heading`, button variants, quote/card blocks).
+4. **Page assembly:** build sections in top-to-bottom order (Hero/Nav -> feature blocks -> testimonial -> CTA -> footer).
+5. **Polish and validation:** run responsive, accessibility, and performance passes before considering work done.
+
+## Mobile-First Requirements (non-negotiable)
+
+- Start with mobile layout first, then extend with `md`/`lg`.
+- Avoid desktop-only fixed heights; prefer content-driven spacing and natural wrapping.
+- Ensure no horizontal overflow at common widths (`320`, `375`, `390`, `768`).
+- Keep tap targets at least 44px and body text readable on small screens.
+- Reflow side-by-side desktop blocks into vertical stacks when needed.
+
+## Section and Interaction Rules
+
+- Keep each major section in its own component under `components/sections/`.
+- Keep client interactivity in focused islands only (e.g., mobile menu, hotspot toggles, sliders).
+- Use `next/image` with intentional sizing and priority only for above-the-fold media.
+- Keep external links opening in new tabs safe with `rel="noopener noreferrer"`.
+
+## Completion Gate
+
+Work is not complete until:
+- content is data-driven where reusable,
+- mobile and desktop both look intentional,
+- lint passes and key UX flows are keyboard/touch friendly.

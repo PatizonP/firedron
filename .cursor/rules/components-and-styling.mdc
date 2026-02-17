@@ -1,0 +1,42 @@
+---
+description: Component structure, import order, and Tailwind styling conventions
+globs: "{components/**/*.tsx,app/**/*.tsx,app/globals.css}"
+alwaysApply: false
+---
+
+# Components and Styling
+
+## Component Rules
+
+- Use PascalCase files in `components/`.
+- Prefer named exports for reusable components.
+- Keep one clear responsibility per component.
+- Type props with `interface` and avoid implicit `any`.
+- Reuse existing shared UI before creating near-duplicate variants.
+
+## Import Order
+
+1. external packages
+2. alias imports (`@/...`)
+3. relative imports (`./...`)
+
+## Tailwind Rules
+
+- Use utility-first classes in JSX; avoid unnecessary CSS modules.
+- Use `clsx` for conditional classes, not manual string concatenation.
+- Keep responsive classes mobile-first (`sm`, `md`, `lg`).
+- Preserve existing visual language: rounded sections/cards, soft shadows, gray backgrounds, green orange.
+- For reusable colors/surfaces, define or reuse semantic tokens in `app/globals.css` via `@theme inline` and consume classes like `text-ink`, `bg-orange`, `text-body-muted`.
+- Avoid repeating arbitrary color utilities (`text-[#...]`, `bg-[#...]`, `bg-[rgba(...)]`) across components; keep arbitrary values only for true one-off visuals.
+
+## Global CSS
+
+- Keep custom CSS minimal and centralized in `app/globals.css`.
+- Define design tokens via CSS variables and Tailwind `@theme inline`.
+- Avoid adding component-specific complex styles in global CSS.
+
+## Accessibility Basics
+
+- Use semantic layout elements and heading order.
+- Ensure clear focus/hover behavior for interactive controls.
+- Use meaningful `alt` text for all images.
