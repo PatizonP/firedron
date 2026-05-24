@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import cx from "clsx";
 
 import { Navigation } from "@/components/sections/Navigation";
+import { getPageContent } from "@/lib/directus/content";
 
 import "./globals.css";
 
@@ -16,23 +17,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "DOFEC",
-  description: "DOFEC autonomous drone fire-fighting platform.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const globalContent = await getPageContent("global");
 
-export default function RootLayout({
+  return {
+    title: globalContent.metadata.title,
+    description: globalContent.metadata.description,
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const globalContent = await getPageContent("global");
+
   return (
     <html lang="cs">
       <body
         className={cx(geistSans.variable, geistMono.variable, "antialiased")}
       >
         <div className="relative z-50 -mb-4 bg-ink pt-4 sm:-mb-5 sm:pt-5">
-          <Navigation />
+          <Navigation
+            items={globalContent.nav.items}
+            a11y={globalContent.a11y}
+          />
         </div>
         {children}
       </body>

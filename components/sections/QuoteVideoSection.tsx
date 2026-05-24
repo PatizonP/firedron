@@ -1,13 +1,14 @@
 import Image from "next/image";
 
-const quote =
-  "Důležitý citát,který je obsažen ve videu a vysvětluje buď misi značky nebo důležité USP dronu, případně celé služby, kterou nabízíme.";
-const author = "Konrád Španěl | Ředitel ZHS PRAHA";
-const thumbnailSrc = "/images/imgSlide1696.png";
-const thumbnailAlt = "Produktové video DOFEC – dočasný náhled";
-const playLabel = "Přehrát představení produktu";
+import type { HomeQuoteVideoContent } from "@/types/content";
 
-export function QuoteVideoSection() {
+const thumbnailSrc = "/images/imgSlide1696.png";
+
+interface QuoteVideoSectionProps {
+  content: HomeQuoteVideoContent;
+}
+
+export function QuoteVideoSection({ content }: QuoteVideoSectionProps) {
   return (
     <div className="grid items-start gap-4 lg:grid-cols-[695px_423px] lg:gap-6">
       <article className="px-4 pt-2 pb-2 text-center sm:px-8 lg:px-0 lg:pt-[134px]">
@@ -20,11 +21,11 @@ export function QuoteVideoSection() {
           aria-hidden
         />
         <p className="mx-auto mt-8 max-w-[566px] text-2xl leading-[1.2] font-normal text-card-light">
-          {quote}
+          {content.quote}
         </p>
-        {author ? (
+        {content.author ? (
           <p className="mt-8 text-sm tracking-[0.02em] text-card-light">
-            {author}
+            {content.author}
           </p>
         ) : null}
       </article>
@@ -32,14 +33,14 @@ export function QuoteVideoSection() {
       <article className="dofec-card-light relative min-h-[360px] overflow-hidden lg:h-[528px]">
         <Image
           src={thumbnailSrc}
-          alt={thumbnailAlt}
+          alt={content.thumbnailAlt}
           fill
           className="object-cover"
           sizes="(max-width: 1023px) 100vw, 423px"
         />
         <div
           className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-orange text-3xl text-white"
-          aria-label={playLabel}
+          aria-label={content.playLabel}
         >
           ▶
         </div>

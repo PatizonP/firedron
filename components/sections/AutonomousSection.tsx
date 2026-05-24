@@ -1,20 +1,13 @@
 import Image from "next/image";
 
 import { DroneHotspotScene } from "@/components/sections/DroneHotspotScene";
-import type {
-  AutonomousCallout,
-  DroneHotspotMarker,
-} from "@/components/sections/DroneHotspotScene";
+import type { HomeAutonomousContent } from "@/types/content";
 
-const title = "100% Autonomous";
-const description =
-  "With impressive capabilities, the drone can locate, track, and extinguish fires with minimal human input while continuously relaying thermal intelligence back to command units.";
-const hotspots: DroneHotspotMarker[] = [
+const HOTSPOT_LAYOUT = [
   {
     id: "hotspot-one",
     xPercent: 61.6,
     yPercent: 43.7,
-    label: "Rotor performance: 124kW",
     popupOffsetX: 24,
     popupOffsetY: -36,
   },
@@ -22,36 +15,55 @@ const hotspots: DroneHotspotMarker[] = [
     id: "hotspot-two",
     xPercent: 50.2,
     yPercent: 63,
-    label: "Autonomy engine: area tracking",
     popupOffsetX: 18,
     popupOffsetY: -34,
   },
-];
-const callout: AutonomousCallout = {
-  label: "Rotor performance: 124kW",
+] as const;
+
+const CALLOUT_LAYOUT = {
   xPercent: 72,
   yPercent: 29,
-};
+} as const;
 
-export function AutonomousSection() {
+interface AutonomousSectionProps {
+  content: HomeAutonomousContent;
+}
+
+export function AutonomousSection({ content }: AutonomousSectionProps) {
+  const hotspots = HOTSPOT_LAYOUT.map((layout) => {
+    const label =
+      content.hotspots.find((hotspot) => hotspot.id === layout.id)?.label ??
+      layout.id;
+
+    return {
+      ...layout,
+      label,
+    };
+  });
+
+  const callout = {
+    ...CALLOUT_LAYOUT,
+    label: content.calloutLabel,
+  };
+
   return (
-    <div id="invest" className="dofec-card-light overflow-hidden p-0 z-0">
+    <div id="invest" className="dofec-card-light z-0 overflow-hidden p-0">
       <div className="px-5 pt-8 text-center sm:px-8 sm:pt-10 lg:hidden">
         <h2 className="text-[2rem] font-semibold leading-tight text-ink sm:text-[2.6rem]">
-          {title}
+          {content.title}
         </h2>
         <p className="mx-auto mt-5 max-w-[560px] text-base leading-relaxed text-body-muted">
-          {description}
+          {content.description}
         </p>
       </div>
 
       <div className="relative aspect-[4/5] min-h-[340px] sm:aspect-[16/10] sm:min-h-[380px] lg:aspect-[1142/528] lg:min-h-[528px]">
         <div className="absolute left-[5.5%] top-[33.9%] z-30 hidden w-[35.55%] max-w-[406px] text-center lg:block">
           <h2 className="text-[2rem] font-semibold leading-tight text-ink">
-            {title}
+            {content.title}
           </h2>
           <p className="mt-5 text-base leading-relaxed text-body-muted">
-            {description}
+            {content.description}
           </p>
         </div>
 

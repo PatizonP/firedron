@@ -6,20 +6,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import type { GlobalA11yContent, NavItemContent } from "@/types/content";
+
 export interface NavItem {
   label: string;
   href: string;
 }
 
-const DEFAULT_NAV_ITEMS: NavItem[] = [
-  { label: "About us", href: "/about-us" },
-  { label: "Invest", href: "/invest" },
-  { label: "Career", href: "#career" },
-  { label: "Contact", href: "#contact" },
-];
-
 interface NavigationProps {
-  items?: NavItem[];
+  items: NavItemContent[];
+  a11y: GlobalA11yContent;
 }
 
 function resolveLinkHref(itemHref: string, pathname: string): string {
@@ -30,7 +26,7 @@ function resolveLinkHref(itemHref: string, pathname: string): string {
   return pathname === "/" ? itemHref : `/${itemHref}`;
 }
 
-export function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProps) {
+export function Navigation({ items, a11y }: NavigationProps) {
   const pathname = usePathname();
   const [isSticky, setIsSticky] = useState(false);
   const [activeHref, setActiveHref] = useState<string | null>(null);
@@ -133,7 +129,7 @@ export function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProps) {
             <Link
               href="/"
               className="inline-flex items-center gap-2"
-              aria-label="DOFEC"
+              aria-label={a11y.logoLabel}
             >
               <Image
                 src="/icons/imgGroup.svg"
@@ -197,11 +193,11 @@ export function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProps) {
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-nav-menu"
               onClick={() => setIsMobileMenuOpen((previous) => !previous)}
-              aria-label={isMobileMenuOpen ? "Zavřít menu" : "Otevřít menu"}
+              aria-label={isMobileMenuOpen ? a11y.closeMenu : a11y.openMenu}
               className="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300/80 bg-card-light/70 text-ink transition-colors hover:text-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-transparent md:hidden"
             >
               <span className="sr-only">
-                {isMobileMenuOpen ? "Zavřít menu" : "Otevřít menu"}
+                {isMobileMenuOpen ? a11y.closeMenu : a11y.openMenu}
               </span>
               <span className="relative block h-4 w-5">
                 <span
@@ -250,7 +246,7 @@ export function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProps) {
             <Link
               href="/"
               className="inline-flex items-center gap-2"
-              aria-label="DOFEC"
+              aria-label={a11y.logoLabel}
             >
               <Image
                 src="/icons/imgGroup.svg"
@@ -273,10 +269,10 @@ export function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProps) {
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-nav-menu"
               onClick={() => setIsMobileMenuOpen(false)}
-              aria-label="Zavřít menu"
+              aria-label={a11y.closeMenu}
               className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300/80 bg-card-light/70 text-ink transition-colors hover:text-orange focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
             >
-              <span className="sr-only">Zavřít menu</span>
+              <span className="sr-only">{a11y.closeMenu}</span>
               <span className="relative block h-4 w-5">
                 <span className="absolute left-0 top-0 block h-0.5 w-5 translate-y-[7px] rotate-45 rounded-full bg-current transition-transform duration-300" />
                 <span className="absolute left-0 top-[7px] block h-0.5 w-5 rounded-full bg-current opacity-0 transition-opacity duration-300" />
@@ -289,7 +285,7 @@ export function Navigation({ items = DEFAULT_NAV_ITEMS }: NavigationProps) {
             id="mobile-nav-menu"
             className="mt-3 flex-1 overflow-y-auto"
             onClick={(event) => event.stopPropagation()}
-            aria-label="Mobilní menu"
+            aria-label={a11y.mobileNavLabel}
           >
             {items.map((item) => (
               <Link

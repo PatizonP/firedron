@@ -1,23 +1,40 @@
 ---
 description: Data-first content organization and Czech copy consistency
-globs: "{data/**/*.{ts,tsx},app/**/*.tsx,components/**/*.tsx}"
+globs: "{data/**/*.{ts,tsx},app/**/*.tsx,components/**/*.tsx,lib/directus/**/*.ts,scripts/directus*.mjs,scripts/setup-directus*.mjs}"
 alwaysApply: false
 ---
 
 # Content and Data
 
-## Data-First Structure
+## Content Source (Directus)
 
-- Keep reusable page copy and content objects in `data/`.
-- Use `data/*.ts` for plain objects/arrays.
-- Use `data/*.tsx` only when content truly needs JSX fragments (for example rich FAQ answers).
+- All editable user-facing text comes from Directus (see `directus-cms.mdc`).
+- CMS content for this site lives under the **Fire Drone** (`firedron`) folder in Directus.
+- Do not add marketing copy, labels, or long-form text to components or `data/` when it belongs in CMS.
+
+## Page → Collection Mapping
+
+| App page (`ContentPage`) | Directus singleton | Repeatable collections |
+|--------------------------|-------------------|------------------------|
+| `global` | `fd_page_global` | `fd_nav_item` |
+| `home` | `fd_page_home` | `fd_home_autonomous_hotspot`, `fd_home_carousel_slide`, `fd_home_exploded_annotation` |
+| `about-us` | `fd_page_about` | `fd_about_text_block`, `fd_about_list_item` |
+| `invest` | `fd_page_invest` | `fd_invest_document` |
+
+Fetch logic and field mapping: `lib/directus/content.ts`. Schema and field definitions: `scripts/directus-page-schema.mjs`.
+
+## Data-First Structure (Non-CMS)
+
+- Use `data/` only for non-CMS configuration: layout constants, static asset paths, UI defaults.
+- Use `data/*.ts` for plain objects/arrays that are not CMS-managed.
+- Use `data/*.tsx` only when content truly needs JSX fragments and is not stored in Directus.
 - Avoid embedding long repeated text directly in page components.
 
 ## Typing Patterns
 
 - Infer mapped-item types from source data where practical.
 - Preferred style: `(typeof projects)[number]`.
-- Store shared reusable type contracts in `types.ts`.
+- Page section shapes: `types/content.ts` (`PageSections`, `SectionContentMap`).
 
 ## Content Consistency
 

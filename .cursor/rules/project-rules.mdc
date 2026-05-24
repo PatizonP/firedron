@@ -11,6 +11,7 @@ This file defines global priorities. Detailed guidance is split into focused rul
 - `components-and-styling.mdc`
 - `collaboration-preferences.mdc`
 - `content-and-data.mdc`
+- `directus-cms.mdc`
 - `figma-to-code-delivery.mdc`
 - `homepage-delivery-and-responsive.mdc`
 - `quality-gates.mdc`
@@ -23,7 +24,7 @@ This file defines global priorities. Detailed guidance is split into focused rul
 - Keep changes minimal, readable, and consistent with neighboring files.
 - Default to Server Components and small Client Component islands.
 - Reuse shared UI (`Section`, `Button`, `Breadcrumb`, cards, grids) before creating new variants.
-- Keep long marketing copy in `data/` unless it is tiny one-off text.
+- Pull user-facing text from Directus (`firedron/` folder, `fd_page_*` singletons); do not hardcode CMS-owned copy in components or `data/`.
 - Build layouts mobile-first, then extend to larger breakpoints.
 - Follow the Figma-to-code section workflow before implementing new UI.
 - Maintain Czech-first content style unless the task explicitly requires another locale.

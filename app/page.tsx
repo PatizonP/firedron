@@ -10,13 +10,19 @@ import { QuoteVideoSection } from "@/components/sections/QuoteVideoSection";
 import { StayInTouchSection } from "@/components/sections/StayInTouchSection";
 import { TimelineSplitSection } from "@/components/sections/TimelineSplitSection";
 import { Section } from "@/components/ui/Section";
+import { getPageContent } from "@/lib/directus/content";
 
-export default function Home() {
+export default async function Home() {
+  const [homeContent, globalContent] = await Promise.all([
+    getPageContent("home"),
+    getPageContent("global"),
+  ]);
+
   return (
     <div className="min-h-screen bg-ink">
       <main className="pb-8">
         <Section id="hero" size="large">
-          <HeroSection />
+          <HeroSection content={homeContent.hero} />
         </Section>
 
         <Section>
@@ -40,55 +46,53 @@ export default function Home() {
         </Section>
 
         <Section>
-          <AutonomousSection />
+          <AutonomousSection content={homeContent.autonomous} />
         </Section>
 
         <Section>
-          <FireImageSplitSection />
+          <FireImageSplitSection content={homeContent["fire-image-split"]} />
         </Section>
 
         <Section>
-          <EffectiveLocateSection />
+          <EffectiveLocateSection content={homeContent["effective-locate"]} />
         </Section>
 
         <Section>
-          <QuoteVideoSection />
+          <QuoteVideoSection content={homeContent["quote-video"]} />
         </Section>
 
         <Section>
-          <FasterIntegratedSection />
+          <FasterIntegratedSection content={homeContent["faster-integrated"]} />
         </Section>
 
         <Section>
-          <TimelineSplitSection />
+          <TimelineSplitSection content={homeContent.timeline} />
           <div className="mx-auto mt-8 max-w-[696px] px-4 text-center sm:mt-10">
             <p className="text-2xl leading-[1.35] font-normal text-card-light">
-              Důležitý citát,který je obsažen ve videu a vysvětluje buď misi
-              značky nebo důležité USP dronu, případně celé služby, kterou
-              nabízíme.
+              {homeContent["timeline-quote"].quote}
             </p>
             <p className="mt-8 text-base leading-normal font-normal text-orange">
-              Konrád Španěl | Ředitel ZHS PRAHA
+              {homeContent["timeline-quote"].author}
             </p>
           </div>
         </Section>
 
         <Section>
-          <ExplodedDroneSection />
+          <ExplodedDroneSection content={homeContent["exploded-drone"]} />
         </Section>
 
         <Section>
           <StayInTouchSection
-            title="Stay in touch"
-            description="Are you interested in DOFEC? We can contact you online or visit your team and present DOFEC in action."
-            primaryCta="Kontaktovat"
-            secondaryCta="Chci nabídku do mailu"
+            title={homeContent["stay-in-touch"].title}
+            description={homeContent["stay-in-touch"].description}
+            primaryCta={homeContent["stay-in-touch"].primaryCta}
+            secondaryCta={homeContent["stay-in-touch"].secondaryCta}
           />
         </Section>
 
         <Section className="pt-1 pb-8">
           <p className="text-center text-xs text-zinc-500">
-            © 2026 DOFEC All rights reserved
+            {globalContent.footer.copyright}
           </p>
         </Section>
       </main>

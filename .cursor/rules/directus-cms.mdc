@@ -1,0 +1,134 @@
+---
+description: Directus CMS as the single source for all site text content
+alwaysApply: true
+---
+
+# Directus CMS
+
+Directus runs as the content layer for this website. All user-facing text must come from Directus—not hardcoded in components or local `data/` files.
+
+## Multi-Project Instance
+
+- The Directus instance hosts **multiple projects**, not just this website.
+- All Fire Drone collections use the **`fd_` prefix**.
+- Do not place Fire Drone content in collections belonging to other projects.
+- The legacy `fire_drone_content` JSON collection and old per-section `fd_home_*` / `fd_about_*` singletons are **deprecated and hidden**—do not use or recreate them.
+
+## Admin Folder Structure
+
+Collections are grouped for editors under the **`firedron`** folder:
+
+| Folder | Purpose | Main collection(s) |
+|--------|---------|-------------------|
+| `firedron_shared` | Site-wide copy | `fd_page_global`, `fd_nav_item` |
+| `firedron_home` | Homepage | `fd_page_home` + list collections (hotspots, carousel, annotations) |
+| `firedron_about` | About page | `fd_page_about` + `fd_about_text_block`, `fd_about_list_item` |
+| `firedron_invest` | Invest page | `fd_page_invest` + `fd_invest_document` |
+
+Folder metadata is managed by `scripts/directus-collection-groups.mjs`.
+
+## Editor-Friendly Schema
+
+- **Never store page copy in a single JSON `content` field.** Use named fields with human-readable labels and notes.
+- Use **one singleton per page** for all section text on that route:
+  - `fd_page_global` — site title, footer, accessibility strings
+  - `fd_page_home` — all homepage sections (hero, autonomous, timeline, contact, …)
+  - `fd_page_about` — SEO, hero, CTA, list, quote, gallery, contact
+  - `fd_page_invest` — SEO, hero
+- Use **field groups** in page singletons to mirror website sections (e.g. `01 — Hero`, `07 — Timeline`). Groups are defined in `scripts/directus-page-schema.mjs`.
+- Use **regular collections** only for repeatable items (nav links, carousel slides, hotspots, text blocks, list items, PDF documents).
+- Prefix translatable field names by section on page singletons (e.g. `hero_title`, `timeline_cta`, `contact_primary_cta`).
+- Keep non-translatable data (URLs, sort order, technical keys like `hotspot_key`) on the main item, not in translations.
+
+## Native Translations
+
+- Content translations use Directus **native translations** (`translations` interface + `{collection}_translations` junction + `languages` collection).
+- Languages: **`cs-CZ`** (default) and **`en-US`** (add English as translation rows, not duplicate collections).
+- **Directus admin UI** defaults to **`cs-CZ`** for all users (`default_language` + user `language`). Applied by `syncDirectusUiLanguage()` in setup scripts.
+- In the app, map locales with `toDirectusLocale()` (`cs` → `cs-CZ`, `en` → `en-US`).
+- When adding a new translatable field:
+  1. Add it to the field list in `scripts/directus-page-schema.mjs`
+  2. Add bilingual admin labels in `scripts/directus-schema-labels.mjs`
+  3. Update types + fetch mappers in `lib/directus/content.ts`
+  4. Run `node scripts/setup-directus-schema.mjs`
+
+## Admin Labels (cs-CZ / en-US)
+
+- Collection and field display names for editors live in `scripts/directus-schema-labels.mjs`.
+- Labels use Directus `meta.translations` so the admin UI switches with user language.
+- Re-apply labels by running the setup script (idempotent).
+
+## List View (Browse) Displays
+
+- Editors should see **actual copy** in collection tables, not `translations [1]`.
+- Configure via `scripts/directus-collection-displays.mjs` (applied by setup script):
+  - `meta.display_template` on the collection (e.g. `{{sort}} · {{translations}} · {{href}}`)
+  - `meta.display: "translations"` on the `translations` field with `display_options.template` (e.g. `{{hero_title}}`, `{{label}}`)
+- When adding a new collection with translations, add a row to `COLLECTION_DISPLAYS` there.
+
+## Credentials and Configuration
+
+- **Website runtime** (`lib/directus/app-client.ts`) uses only:
+  - `DIRECTUS_URL`
+  - `DIRECTUS_TOKEN` (static read-only token for `firedron-app@dofec.cz`)
+- Never use `DIRECTUS_ADMIN_*` in the Next.js app or on Vercel.
+- **Editor login** for customers: `firedron-editor@dofec.cz` (Directus admin UI only).
+- Setup scripts use `DIRECTUS_ADMIN_*` locally.
+
+## Editor Permissions (Customer Role)
+
+The **Firedron Editor** role (`firedron-editor@dofec.cz`) is restricted to **translatable copy only**. Structural data stays admin-only.
+
+| Editor can | Editor cannot |
+|------------|---------------|
+| Read and update text in page singletons (`fd_page_*`) | Create/update/delete rows in `languages` (collection is hidden in sidebar) |
+| Edit labels in `fd_nav_item` (not URLs) | Change `href`, `sort`, or technical keys (`hotspot_key`, …) |
+| Update existing translation rows (`cs-CZ`, `en-US`) | Create/delete nav items, list rows, or documents |
+| Edit copy in list collections (hotspots, slides, …) | Add new languages to the site |
+
+Editors have **read-only** access to `languages` internally (required for translation tabs to render). They cannot add or edit language rows.
+
+Permissions are defined in `scripts/directus-editor-permissions.mjs` and applied by `syncFiredronPermissions()` in `scripts/setup-directus-users.mjs` (also run from `setup-directus-schema.mjs`).
+
+Re-apply after schema changes:
+
+```bash
+node scripts/setup-directus-schema.mjs
+# or only permissions (requires existing roles/policies):
+node -e "import('./scripts/setup-directus-users.mjs').then(m => m.syncFiredronPermissions(...))"
+```
+
+Use your admin account for URLs, sort order, new languages, and new list items.
+
+## Content Fetching
+
+- Fetch in Server Components via `getPageContent(page, locale)` from `lib/directus/content.ts`.
+- Page singletons: one Directus request per page (`fd_page_home`, `fd_page_about`, …) plus list collections where needed.
+- Cache CMS responses for **one hour** (`CONTENT_REVALIDATE_SECONDS = 3600`) via `unstable_cache`.
+- Type shapes live in `types/content.ts`.
+- **Do not use local fallback copy.** If Directus is misconfigured or unreachable, `getPageContent()` throws (`DirectusFetchError` / `DirectusContentError`) so failures are visible instead of silently showing stale text.
+- Set `DIRECTUS_DEBUG=true` in `.env` for verbose server logs (`[directus]` prefix): fetch timings, mapped fields, missing translations. Errors and warnings log even without the flag.
+
+## Schema Setup
+
+Run from project root (requires `DIRECTUS_ADMIN_*` in `.env`):
+
+```bash
+node scripts/setup-directus-schema.mjs
+```
+
+This script (idempotent):
+
+1. Creates/updates page collections from `scripts/directus-page-schema.mjs`
+2. Repairs translation relations (`junction_field`, `special: m2o`)
+3. Applies bilingual labels from `scripts/directus-schema-labels.mjs`
+4. Creates `firedron/` folder structure and assigns collection groups
+5. Migrates legacy per-section data into page singletons
+6. Seeds Czech content and hides deprecated collections
+
+Do not commit `.env` or credential values.
+
+## Czech Content
+
+- Preserve Czech-first tone in `cs-CZ` translation rows.
+- Keep wording consistent across navigation, sections, and metadata.

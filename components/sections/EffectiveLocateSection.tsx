@@ -1,17 +1,19 @@
 import Image from "next/image";
 import cx from "clsx";
 
+import type { HomeEffectiveLocateContent } from "@/types/content";
+
 const DOT_ROWS = 7;
 const DOT_COLS = 14;
 const orange_DOTS = new Set(["2-5", "5-11"]);
-const leftTitle = "Effective";
-const leftDescription =
-  "Krátký text o tom jak jsou effektivní, že prorazí sklo atd.";
-const rightTitle = "Locate and intervention";
-const rightDescription =
-  "DOFEC™ is equipped with a launcher that can fire fire-extinguishing capsules during flight. In addition to its fire-fighting abilities, the drone also features onboard cameras. These cameras enable it to locate people and animals not visible to normal RGB cameras, which helps to gather crucial information about the disaster-struck area.";
 
-export function EffectiveLocateSection() {
+interface EffectiveLocateSectionProps {
+  content: HomeEffectiveLocateContent;
+}
+
+export function EffectiveLocateSection({
+  content,
+}: EffectiveLocateSectionProps) {
   return (
     <div className="grid gap-3 lg:grid-cols-[423px_695px] lg:gap-6">
       <article className="dofec-card-light relative flex min-h-[420px] flex-col overflow-hidden p-5 lg:hidden">
@@ -19,7 +21,7 @@ export function EffectiveLocateSection() {
           +
         </span>
         <h3 className="mt-4 text-center text-[2rem] font-normal leading-none text-ink">
-          {leftTitle}
+          {content.leftTitle}
         </h3>
         <div className="relative mx-auto mt-5 h-[230px] w-[290px]">
           <Image
@@ -38,14 +40,14 @@ export function EffectiveLocateSection() {
           />
         </div>
         <p className="mx-auto mt-4 max-w-[304px] text-center text-[1rem]/[1.5] font-normal text-body-muted">
-          {leftDescription}
+          {content.leftDescription}
         </p>
         <button
           type="button"
           className="mx-auto mt-auto inline-flex h-[40px] items-center gap-3 rounded-full bg-body-muted/25 px-6 text-[1rem] font-normal text-ink backdrop-blur-[3px]"
         >
           <span className="text-[11px] leading-none">▶</span>
-          Play video
+          {content.leftCta}
         </button>
       </article>
 
@@ -54,7 +56,7 @@ export function EffectiveLocateSection() {
           +
         </span>
         <h3 className="absolute left-1/2 top-[42px] -translate-x-1/2 text-center text-[32px] font-normal leading-none text-ink">
-          {leftTitle}
+          {content.leftTitle}
         </h3>
         <div className="absolute left-1/2 top-[78px] h-[290px] w-[360px] -translate-x-1/2">
           <Image
@@ -73,20 +75,20 @@ export function EffectiveLocateSection() {
           />
         </div>
         <p className="absolute left-1/2 top-[388px] w-[304px] -translate-x-1/2 text-center text-[16px]/[1.5] font-normal text-body-muted">
-          {leftDescription}
+          {content.leftDescription}
         </p>
         <button
           type="button"
           className="absolute bottom-5 left-1/2 inline-flex h-[40px] -translate-x-1/2 items-center gap-3 rounded-full bg-body-muted/25 px-6 text-[16px] font-normal text-ink backdrop-blur-[3px]"
         >
           <span className="text-[11px] leading-none">▶</span>
-          Play video
+          {content.leftCta}
         </button>
       </article>
 
       <article className="dofec-card-light relative min-h-[420px] overflow-hidden p-5 lg:hidden">
         <h3 className="text-[2rem]/[1.04] font-normal text-ink">
-          {rightTitle}
+          {content.rightTitle}
         </h3>
         <div className="mt-5 flex flex-col gap-2">
           {Array.from({ length: 5 }).map((_, rowIndex) => (
@@ -104,13 +106,13 @@ export function EffectiveLocateSection() {
           ))}
         </div>
         <p className="mt-6 text-[1rem]/[1.55] font-normal text-body-muted">
-          {rightDescription}
+          {content.rightDescription}
         </p>
       </article>
 
       <article className="dofec-card-light relative hidden h-[528px] overflow-hidden lg:block">
         <h3 className="absolute left-[58px] top-[42px] max-w-[360px] text-[42px]/[1.06] font-normal text-ink">
-          {rightTitle}
+          {content.rightTitle}
         </h3>
         <div className="absolute left-[57px] top-[156px] flex w-[570px] flex-col gap-[21px]">
           {Array.from({ length: DOT_ROWS }).map((_, rowIndex) => (
@@ -137,7 +139,7 @@ export function EffectiveLocateSection() {
           ))}
         </div>
         <p className="absolute left-[57px] top-[349px] w-[567px] text-[16px]/[1.5] font-normal text-body-muted">
-          {rightDescription}
+          {content.rightDescription}
         </p>
       </article>
     </div>
